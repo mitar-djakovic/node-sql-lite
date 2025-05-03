@@ -9,6 +9,7 @@ export default defineConfig([
 	// JS + TS base rules
 	{
 		files: ["**/*.{js,cjs,mjs,ts}"],
+		ignores: ["lint-staged.config.js"],
 		languageOptions: {
 			parser: tseslint.parser,
 			parserOptions: {
