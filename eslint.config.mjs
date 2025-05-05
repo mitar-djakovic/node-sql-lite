@@ -6,7 +6,6 @@ import simpleImportSort from "eslint-plugin-simple-import-sort";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-	// JS + TS base rules
 	{
 		files: ["**/*.{js,cjs,mjs,ts}"],
 		ignores: ["lint-staged.config.js"],

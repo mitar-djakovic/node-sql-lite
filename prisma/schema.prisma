@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Course {
+  id          Int       @id @default(autoincrement())
+  title       String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  chapters    Chapter[]
+}
+
+model Chapter {
+  id       Int      @id @default(autoincrement())
+  title    String
+  order    Int // determines the order within the course
+  courseId Int
+  course   Course   @relation(fields: [courseId], references: [id])
+  lessons  Lesson[]
+}
+
+model Lesson {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  order     Int // determines the order within the chapter
+  chapterId Int
+  chapter   Chapter @relation(fields: [chapterId], references: [id])
+}

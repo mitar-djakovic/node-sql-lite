@@ -1,13 +1,42 @@
 import express from 'express';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+
+import courseRouter from './modules/courses/course.router';
 
 const app = express();
-const port = '3000';
+const port = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-	res.send('Hello World!');
-	console.log('Response sent');
-});
+// Set up Swagger options
+const swaggerOptions = {
+	swaggerDefinition: {
+		openapi: '3.0.0',
+		info: {
+			title: 'Course API',
+			version: '1.0.0',
+			description: 'API for creating and managing courses',
+		},
+		servers: [
+			{
+				url: `http://localhost:${port}`,
+			},
+		],
+	},
+	apis: ['./src/modules/courses/course.router.ts'], // This will search for all .route.ts files in the project
+};
+
+// Generate Swagger spec
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
+// Serve Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Use your course controller
+app.use('/courses', courseRouter);
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+	console.log(`Server running on port ${port}`);
 });
