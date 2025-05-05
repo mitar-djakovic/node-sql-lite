@@ -31,17 +31,32 @@ model Chapter {
 }
 
 model Lesson {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  order     Int // determines the order within the chapter
-  chapterId Int
-  chapter   Chapter @relation(fields: [chapterId], references: [id])
+  id            Int             @id @default(autoincrement())
+  title         String
+  content       String?
+  order         Int // determines the order within the chapter
+  chapterId     Int
+  chapter       Chapter         @relation(fields: [chapterId], references: [id])
+  LessonAttempt LessonAttempt[]
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  createdAt DateTime @default(now())
+  id            Int             @id @default(autoincrement())
+  name          String
+  email         String          @unique
+  createdAt     DateTime        @default(now())
+  LessonAttempt LessonAttempt[]
+}
+
+model LessonAttempt {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  lessonId    Int
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
+  lesson Lesson @relation(fields: [lessonId], references: [id])
+
+  @@index([userId, lessonId])
 }
