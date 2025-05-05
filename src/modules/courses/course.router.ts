@@ -1,7 +1,7 @@
 import express, { Request } from 'express';
 import { z } from 'zod';
 
-import { createCourse } from './course.service';
+import { createCourse, getAllCourses } from './course.service';
 import { CreateCourseDTO, createCourseSchema } from './course.validation';
 
 const router = express.Router();
@@ -84,6 +84,33 @@ router.post('/', async (req: Request, res: any) => {
 		// Handle other errors (like DB errors, etc.)
 		console.error('Error creating course:', err);
 		res.status(500).json({ message: 'Failed to create course' });
+	}
+});
+
+/**
+ * @swagger
+ * /courses:
+ *   get:
+ *     summary: Get all courses
+ *     responses:
+ *       200:
+ *         description: List of courses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Course'
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/', async (req, res) => {
+	try {
+		const courses = await getAllCourses();
+		res.status(200).json(courses);
+	} catch (err) {
+		console.error('Error fetching courses:', err);
+		res.status(500).json({ message: 'Failed to fetch courses' });
 	}
 });
 

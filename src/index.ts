@@ -2,7 +2,7 @@ import express from 'express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-import courseRouter from './modules/courses/course.router';
+import router from './api';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,11 +18,11 @@ const swaggerOptions = {
 		},
 		servers: [
 			{
-				url: `http://localhost:${port}`,
+				url: `http://localhost:${port}/api`,
 			},
 		],
 	},
-	apis: ['./src/modules/courses/course.router.ts'], // This will search for all .route.ts files in the project
+	apis: ['./src/modules/**/*.router.ts'], // This will search for all .route.ts files in the project
 };
 
 // Generate Swagger spec
@@ -35,7 +35,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(express.json());
 
 // Use your course controller
-app.use('/courses', courseRouter);
+app.use('/api', router);
 
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`);
