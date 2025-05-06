@@ -61,7 +61,6 @@ const router = express.Router();
 
 // Need to find a solution for any
 router.post('/', async (req: Request, res: any) => {
-	console.log(req.body);
 	try {
 		// Validate and parse the request body using Zod schema
 		const validatedData: CreateCourseDTO = createCourseSchema.parse(req.body);

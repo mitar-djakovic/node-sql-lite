@@ -8,7 +8,7 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
 	{
 		files: ["**/*.{js,cjs,mjs,ts}"],
-		ignores: ["lint-staged.config.js"],
+		ignores: ["lint-staged.config.js", "prisma/seed-achievements.ts", "prisma/seed-courses.ts"],
 		languageOptions: {
 			parser: tseslint.parser,
 			parserOptions: {

@@ -1,5 +1,6 @@
 import express from 'express';
 
+import achievementRouter from '../modules/achievements/achievement.router';
 import chapterRouter from '../modules/chapters/chapter.router';
 import courseRouter from '../modules/courses/course.router';
 import lessonRouter from '../modules/lessons/lesson/lesson.router';
@@ -13,5 +14,6 @@ router.use('/chapters', chapterRouter);
 router.use('/lessons', lessonRouter);
 router.use('/users', userRouter);
 router.use('/lesson-attempts', lessonAttemptRouter);
+router.use('/achievements', achievementRouter);
 
 export default router;

@@ -14,38 +14,43 @@ datasource db {
 }
 
 model Course {
-  id          Int       @id @default(autoincrement())
-  title       String    @unique
+  id          Int      @id @default(autoincrement())
+  title       String   @unique
   description String?
-  createdAt   DateTime  @default(now())
-  chapters    Chapter[]
+  createdAt   DateTime @default(now())
+
+  chapters Chapter[]
 }
 
 model Chapter {
-  id       Int      @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   title    String
   order    Int // determines the order within the course
   courseId Int
-  course   Course   @relation(fields: [courseId], references: [id])
-  lessons  Lesson[]
+  course   Course @relation(fields: [courseId], references: [id])
+
+  lessons Lesson[]
 }
 
 model Lesson {
-  id            Int             @id @default(autoincrement())
-  title         String
-  content       String?
-  order         Int // determines the order within the chapter
-  chapterId     Int
-  chapter       Chapter         @relation(fields: [chapterId], references: [id])
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  order     Int // determines the order within the chapter
+  chapterId Int
+  chapter   Chapter @relation(fields: [chapterId], references: [id])
+
   LessonAttempt LessonAttempt[]
 }
 
 model User {
-  id            Int             @id @default(autoincrement())
-  name          String
-  email         String          @unique
-  createdAt     DateTime        @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+
   LessonAttempt LessonAttempt[]
+  achievements  Achievement[]   @relation("UserAchievements")
 }
 
 model LessonAttempt {
@@ -59,4 +64,15 @@ model LessonAttempt {
   lesson Lesson @relation(fields: [lessonId], references: [id])
 
   @@index([userId, lessonId])
+}
+
+model Achievement {
+  id          Int      @id @default(autoincrement())
+  title       String   @unique
+  description String
+  criteria    Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[] @relation("UserAchievements")
 }
